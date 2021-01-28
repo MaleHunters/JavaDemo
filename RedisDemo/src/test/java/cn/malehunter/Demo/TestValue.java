@@ -27,8 +27,10 @@ public class TestValue {
   @Test
   public void setValue(){
     redisTemplate.boundValueOps("name").set("MaleHunter");
+    // 上面的会被覆盖
+    // redisTemplate.boundValueOps("name").set("MaleHunters");
     // 设置存活时间 expire(数值，数值代表的时间单位)
-    redisTemplate.boundValueOps("name").expire(10,TimeUnit.SECONDS);
+    // redisTemplate.boundValueOps("name").expire(10,TimeUnit.SECONDS);
   }
 
   // 取值
