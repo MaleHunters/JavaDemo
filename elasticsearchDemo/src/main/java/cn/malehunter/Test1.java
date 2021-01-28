@@ -1,6 +1,5 @@
 package cn.malehunter;
 
-import com.sun.javafx.collections.MappingChange;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -8,7 +7,6 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +17,7 @@ import java.util.Map;
  * @Package: cn.malehunter
  * @CurrentProject: elasticsearchDemo
  * @version: 1.0
+ * 单次的添加
  */
 public class Test1 {
   public static void main(String[] args) throws IOException {
