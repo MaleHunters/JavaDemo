@@ -1,0 +1,303 @@
+#查询全部
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#创建索引结构
+PUT sku
+{
+  "mappings": {
+    "doc":{
+      "properties":{
+        "name":{
+          "type":"text",
+          "analyzer":"ik_smart"
+        },
+        "price":{
+          "type":"integer"
+        },
+        "image":{
+          "type":"text"
+        },
+        "createTime":{
+          "type":"date"
+        },
+        "spuId":{
+          "type":"text"
+        },
+        "categoryName":{
+          "type":"keyword"
+        },
+        "brandName":{
+          "type":"keyword"
+        },
+        "spec":{
+          "type":"object"
+        },
+        "saleNum":{
+          "type":"integer"
+        },
+        "commentNum":{
+          "type":"integer"
+        }
+      }
+    }
+  }
+}
+
+#插入文档  不指定id
+POST sku/doc
+{
+  "name":"小米手机",
+  "price":200000,
+  "spuId":"101",
+  "createTime":"2019-05-01",
+  "brandName":"小米",
+  "categoryName":"手机",
+  "saleNum":10101,
+  "commentNum":101022,
+  "spec":{
+    "网络制式":"移动4g",
+    "屏幕尺寸":"4.5"
+  }
+}
+
+#插入文档 指定id
+PUT sku/doc/1
+{
+  "name":"华为手机",
+  "price":400000,
+  "spuId":"102",
+  "createTime":"2019-04-20",
+  "brandName":"华为",
+  "categoryName":"手机",
+  "saleNum":1010123,
+  "commentNum":231022,
+  "spec":{
+    "网络制式":"全网通",
+    "屏幕尺寸":"6.5"
+  }
+
+}
+
+PUT sku/doc/2
+{
+  "name":"三星手机",
+  "price":400000,
+  "spuId":"103",
+  "createTime":"2019-04-20",
+  "brandName":"三星",
+  "categoryName":"手机",
+  "saleNum":1010123,
+  "commentNum":231022,
+  "spec":{
+    "网络制式":"全网通",
+    "屏幕尺寸":"6.5"
+  }
+
+}
+
+PUT sku/doc/3
+{
+  "name":"三星电视",
+  "price":400000,
+  "spuId":"104",
+  "createTime":"2019-04-20",
+  "brandName":"三星",
+  "categoryName":"电视",
+  "saleNum":1010123,
+  "commentNum":231022,
+  "spec":{
+    "网络制式":"全网通",
+    "屏幕尺寸":"6.5"
+  }
+
+}
+
+#查数据
+GET sku/_search
+
+#修改数据
+PUT sku/doc/1
+{
+  "name":"华为手机",
+  "price":400000,
+  "spuId":"102",
+  "createTime":"2019-04-20",
+  "brandName":"华为",
+  "categoryName":"手机",
+  "saleNum":1010123,
+  "commentNum":31022,
+  "spec":{
+    "网络制式":"全网通",
+    "屏幕尺寸":"6.5"
+  }
+
+}
+
+
+#查询所有数据
+
+GET sku/_search
+
+
+GET sku/_search
+{
+  "query": {
+    "match_all": {
+
+    }
+  }
+}
+
+
+#非精确匹配查询
+GET sku/_search
+{
+  "query": {
+    "match": {
+      "name": "小米手机"
+    }
+  }
+}
+
+#精确匹配查询
+GET sku/_search
+{
+  "query": {
+    "match": {
+      "name": {
+        "query": "小米手机",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+#多字段查询
+GET sku/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "三星",
+      "fields": ["name","categoryName","brandName"]
+    }
+  }
+}
+
+#词条匹配 精确查询（term）
+GET sku/_search
+{
+  "query": {
+    "term": {
+      "price": {
+        "value": "400000"
+    }
+  }
+ }
+}
+
+#多词条匹配 精确查询（terms）
+GET sku/_search
+{
+  "query": {
+    "terms": {
+      "price": [400000,200000]
+
+    }
+  }
+}
+
+#布尔组合查询 and
+GET sku/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "name": "手机"
+          }
+        },
+        {
+          "term": {
+            "brandName": {
+              "value": "三星"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+#布尔组合查询 or
+GET sku/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "name": "手机"
+          }
+        },
+        {
+          "term": {
+            "brandName": {
+              "value": "三星"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+#过滤查询
+GET sku/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "match":{
+          "brandName":"小米"
+        }
+      }
+    }
+  }
+}
+
+#分组查询(聚合查询)
+GET sku/_search
+{
+  "size": 0,
+  "aggs": {
+    "sku_category": {
+      "terms": {
+        "field": "categoryName"
+      }
+    },
+     "sku_brand": {
+      "terms": {
+        "field": "brandName"
+      }
+  }
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
